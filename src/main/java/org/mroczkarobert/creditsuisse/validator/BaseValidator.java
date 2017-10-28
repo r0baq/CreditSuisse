@@ -3,7 +3,7 @@ package org.mroczkarobert.creditsuisse.validator;
 import java.time.LocalDate;
 import java.util.Set;
 
-import org.mroczkarobert.creditsuisse.service.CurrencyRemoteService;
+import org.mroczkarobert.creditsuisse.service.CurrencyService;
 import org.mroczkarobert.creditsuisse.transport.ErrorData;
 import org.mroczkarobert.creditsuisse.transport.ErrorTrade;
 import org.mroczkarobert.creditsuisse.transport.Trade;
@@ -20,7 +20,7 @@ public abstract class BaseValidator implements TradeValidator {
 	private static final Set<String> VALID_LEGAL_ENTITIES = Sets.newHashSet("CS Zurich");
 	
 	@Autowired
-	private CurrencyRemoteService currencyRemoteService;
+	private CurrencyService currencyService;
 
 	public ErrorTrade validate(Trade trade, ProductType productType) {
 		ErrorTrade result = new ErrorTrade(trade);
@@ -64,7 +64,7 @@ public abstract class BaseValidator implements TradeValidator {
 
 	private ErrorData validateCurrencyAndWorkingDay(LocalDate valueDate, String currency, ErrorCode invalidCurrency, ErrorCode nonWorkingDay) {
 		try {
-			if (!currencyRemoteService.isWorkingDay(valueDate, currency)) {
+			if (!currencyService.isWorkingDay(valueDate, currency)) {
 				return new ErrorData(nonWorkingDay, "Value date cannot fall on weekend or non-working day for currency %s", currency);
 			}
 			

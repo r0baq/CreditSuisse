@@ -1,6 +1,8 @@
 package org.mroczkarobert.creditsuisse.validator;
 
 import org.mroczkarobert.creditsuisse.type.ProductType;
+import org.mroczkarobert.creditsuisse.validator.impl.OptionValidator;
+import org.mroczkarobert.creditsuisse.validator.impl.SpotForwardValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -16,7 +16,7 @@ import org.mroczkarobert.creditsuisse.transport.ErrorTrade;
 import org.mroczkarobert.creditsuisse.transport.Trade;
 import org.mroczkarobert.creditsuisse.type.ErrorCode;
 import org.mroczkarobert.creditsuisse.util.InvalidCurrencyException;
-import org.mroczkarobert.creditsuisse.validator.SpotForwardValidator;
+import org.mroczkarobert.creditsuisse.validator.impl.SpotForwardValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -26,7 +26,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class TestValidationServiceSpot {
 
 	@Mock
-	private CurrencyRemoteService currencyRemoteService;
+	private CurrencyService currencyService;
 	
 	@InjectMocks
 	@Autowired
@@ -56,8 +56,8 @@ public class TestValidationServiceSpot {
 		trade.setLegalEntity("CS Zurich");
 		trade.setTrader("Johann Baumfiddler");
 		
-		Mockito.when(currencyRemoteService.isWorkingDay(LocalDate.parse("2016-08-15"), "EUR")).thenReturn(true);
-		Mockito.when(currencyRemoteService.isWorkingDay(LocalDate.parse("2016-08-15"), "USD")).thenReturn(true);
+		Mockito.when(currencyService.isWorkingDay(LocalDate.parse("2016-08-15"), "EUR")).thenReturn(true);
+		Mockito.when(currencyService.isWorkingDay(LocalDate.parse("2016-08-15"), "USD")).thenReturn(true);
 		
 		//when
 		ErrorTrade result = validationService.validate(trade);
@@ -82,8 +82,8 @@ public class TestValidationServiceSpot {
 		trade.setLegalEntity("CS Zurich");
 		trade.setTrader("Johann Baumfiddler");
 		
-		Mockito.when(currencyRemoteService.isWorkingDay(LocalDate.parse("2016-08-15"), "XXX")).thenThrow(new InvalidCurrencyException());
-		Mockito.when(currencyRemoteService.isWorkingDay(LocalDate.parse("2016-08-15"), "USD")).thenReturn(true);
+		Mockito.when(currencyService.isWorkingDay(LocalDate.parse("2016-08-15"), "XXX")).thenThrow(new InvalidCurrencyException());
+		Mockito.when(currencyService.isWorkingDay(LocalDate.parse("2016-08-15"), "USD")).thenReturn(true);
 		
 		//when
 		ErrorTrade result = validationService.validate(trade);
@@ -107,8 +107,8 @@ public class TestValidationServiceSpot {
 		trade.setLegalEntity("CS Zurich");
 		trade.setTrader("Johann Baumfiddler");
 		
-		Mockito.when(currencyRemoteService.isWorkingDay(LocalDate.parse("2016-08-15"), "EUR")).thenReturn(true);
-		Mockito.when(currencyRemoteService.isWorkingDay(LocalDate.parse("2016-08-15"), "USD")).thenReturn(true);
+		Mockito.when(currencyService.isWorkingDay(LocalDate.parse("2016-08-15"), "EUR")).thenReturn(true);
+		Mockito.when(currencyService.isWorkingDay(LocalDate.parse("2016-08-15"), "USD")).thenReturn(true);
 		
 		//when
 		ErrorTrade result = validationService.validate(trade);
@@ -133,8 +133,8 @@ public class TestValidationServiceSpot {
 		trade.setLegalEntity("CS Zurich");
 		trade.setTrader("Johann Baumfiddler");
 		
-		Mockito.when(currencyRemoteService.isWorkingDay(LocalDate.parse("2016-08-10"), "EUR")).thenReturn(true);
-		Mockito.when(currencyRemoteService.isWorkingDay(LocalDate.parse("2016-08-10"), "USD")).thenReturn(true);
+		Mockito.when(currencyService.isWorkingDay(LocalDate.parse("2016-08-10"), "EUR")).thenReturn(true);
+		Mockito.when(currencyService.isWorkingDay(LocalDate.parse("2016-08-10"), "USD")).thenReturn(true);
 		
 		//when
 		ErrorTrade result = validationService.validate(trade);
@@ -159,8 +159,8 @@ public class TestValidationServiceSpot {
 		trade.setLegalEntity("CS Zurich");
 		trade.setTrader("Johann Baumfiddler");
 		
-		Mockito.when(currencyRemoteService.isWorkingDay(LocalDate.parse("2016-08-15"), "EUR")).thenReturn(true);
-		Mockito.when(currencyRemoteService.isWorkingDay(LocalDate.parse("2016-08-15"), "USD")).thenReturn(true);
+		Mockito.when(currencyService.isWorkingDay(LocalDate.parse("2016-08-15"), "EUR")).thenReturn(true);
+		Mockito.when(currencyService.isWorkingDay(LocalDate.parse("2016-08-15"), "USD")).thenReturn(true);
 		
 		//when
 		ErrorTrade result = validationService.validate(trade);
@@ -185,8 +185,8 @@ public class TestValidationServiceSpot {
 		trade.setLegalEntity("CS Zurich XXX");
 		trade.setTrader("Johann Baumfiddler");
 		
-		Mockito.when(currencyRemoteService.isWorkingDay(LocalDate.parse("2016-08-15"), "EUR")).thenReturn(true);
-		Mockito.when(currencyRemoteService.isWorkingDay(LocalDate.parse("2016-08-15"), "USD")).thenReturn(true);
+		Mockito.when(currencyService.isWorkingDay(LocalDate.parse("2016-08-15"), "EUR")).thenReturn(true);
+		Mockito.when(currencyService.isWorkingDay(LocalDate.parse("2016-08-15"), "USD")).thenReturn(true);
 		
 		//when
 		ErrorTrade result = validationService.validate(trade);
@@ -211,8 +211,8 @@ public class TestValidationServiceSpot {
 		trade.setLegalEntity("CS Zurich");
 		trade.setTrader("Johann Baumfiddler");
 		
-		Mockito.when(currencyRemoteService.isWorkingDay(LocalDate.parse("2010-12-31"), "EUR")).thenReturn(true);
-		Mockito.when(currencyRemoteService.isWorkingDay(LocalDate.parse("2010-12-31"), "USD")).thenReturn(true);
+		Mockito.when(currencyService.isWorkingDay(LocalDate.parse("2010-12-31"), "EUR")).thenReturn(true);
+		Mockito.when(currencyService.isWorkingDay(LocalDate.parse("2010-12-31"), "USD")).thenReturn(true);
 		
 		//when
 		ErrorTrade result = validationService.validate(trade);

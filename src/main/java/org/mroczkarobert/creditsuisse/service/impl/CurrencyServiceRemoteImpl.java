@@ -1,7 +1,8 @@
-package org.mroczkarobert.creditsuisse.service;
+package org.mroczkarobert.creditsuisse.service.impl;
 
 import java.time.LocalDate;
 
+import org.mroczkarobert.creditsuisse.service.CurrencyService;
 import org.mroczkarobert.creditsuisse.transport.RatesDay;
 import org.mroczkarobert.creditsuisse.util.InvalidCurrencyException;
 import org.springframework.http.HttpStatus;
@@ -10,7 +11,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-public class CurrencyRemoteService {
+public class CurrencyServiceRemoteImpl implements CurrencyService {
 
 	private final static String URL = "http://api.fixer.io/{date}?base={currency}";
 	

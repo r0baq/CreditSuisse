@@ -1,4 +1,4 @@
-package org.mroczkarobert.creditsuisse.validator;
+package org.mroczkarobert.creditsuisse.validator.impl;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -7,6 +7,7 @@ import org.mroczkarobert.creditsuisse.transport.ErrorTrade;
 import org.mroczkarobert.creditsuisse.transport.Trade;
 import org.mroczkarobert.creditsuisse.type.ErrorCode;
 import org.mroczkarobert.creditsuisse.type.ProductType;
+import org.mroczkarobert.creditsuisse.validator.BaseValidator;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Sets;
