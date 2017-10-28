@@ -25,21 +25,18 @@ public abstract class BaseValidator implements TradeValidator {
 		String currency1 = trade.getCcyPair().substring(0, 3);
 		String currency2 = trade.getCcyPair().substring(3, 6);
 		
-		if (valueDate == null) {
-			throw new ValidationException(ErrorCode.EMPTY_VALUE_DATE, "Value date cannot cannot be empty");
+		if (valueDate != null) {
+			if (valueDate.isBefore(trade.getTradeDate())) {
+				throw new ValidationException(ErrorCode.VALUE_DATE_BEFORE_TRADE_DATE, "Value date cannot be before trade date"); //RMR opis do enuma
+			}
+			
+			validateCurrencyAndWorkingDay(valueDate, currency1, ErrorCode.INVALID_CURRENCY_1, ErrorCode.NON_WORKING_DAY_1);
+			validateCurrencyAndWorkingDay(valueDate, currency2, ErrorCode.INVALID_CURRENCY_2, ErrorCode.NON_WORKING_DAY_2);
 		}
 		
 		if (trade.getTradeDate() == null) {
 			throw new ValidationException(ErrorCode.EMPTY_TRADE_DATE, "Trade date cannot cannot be empty");
 		}
-		
-		//RMR null
-		if (valueDate.isBefore(trade.getTradeDate())) {
-			throw new ValidationException(ErrorCode.VALUE_DATE_BEFORE_TRADE_DATE, "Value date cannot be before trade date"); //RMR opis do enuma
-		}
-		
-		validateCurrencyAndWorkingDay(valueDate, currency1, ErrorCode.INVALID_CURRENCY_1, ErrorCode.NON_WORKING_DAY_1);
-		validateCurrencyAndWorkingDay(valueDate, currency2, ErrorCode.INVALID_CURRENCY_2, ErrorCode.NON_WORKING_DAY_2);
 		
 		if (!VALID_CUSTOMERS.contains(trade.getCustomer())) {
 			throw new ValidationException(ErrorCode.CUSTOMER_NOT_SUPPORTED, "Customer %s is not supported", trade.getCustomer());

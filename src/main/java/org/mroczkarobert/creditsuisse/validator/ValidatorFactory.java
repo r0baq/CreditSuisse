@@ -1,10 +1,8 @@
-package org.mroczkarobert.creditsuisse.util;
+package org.mroczkarobert.creditsuisse.validator;
 
 import org.mroczkarobert.creditsuisse.type.ErrorCode;
 import org.mroczkarobert.creditsuisse.type.ProductType;
-import org.mroczkarobert.creditsuisse.validator.OptionsValidator;
-import org.mroczkarobert.creditsuisse.validator.ProductTypeDateValidator;
-import org.mroczkarobert.creditsuisse.validator.TradeValidator;
+import org.mroczkarobert.creditsuisse.util.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

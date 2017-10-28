@@ -1,7 +1,6 @@
 package org.mroczkarobert.creditsuisse.type;
 
 public enum ErrorCode {
-	EMPTY_VALUE_DATE,
 	EMPTY_TRADE_DATE,
 	VALUE_DATE_BEFORE_TRADE_DATE,
 	NON_WORKING_DAY_1,
