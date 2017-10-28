@@ -11,30 +11,36 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 public class Trade { //RMR serializable?
 	
-	private String customer; //RMR enums?
-	
-	private String ccyPair; //RMR enums?
-	
 	@JsonDeserialize(using = ProductTypeDeserializer.class)  
 	private ProductType type;
-	
-	private String direction; //RMR enums?
-	
 	@JsonDeserialize(using = LocalDateDeserializer.class)  
 	private LocalDate tradeDate;
-	
-	private BigDecimal amount1;
-	
-	private BigDecimal amount2;
-	
-	private BigDecimal rate;
-	
 	@JsonDeserialize(using = LocalDateDeserializer.class)  
 	private LocalDate valueDate;
 	
+	private String customer; //RMR enums?
+	private String ccyPair; //RMR enums?
+	private String direction; //RMR enums?
+	private BigDecimal amount1;
+	private BigDecimal amount2;
+	private BigDecimal rate;
 	private String legalEntity; //RMR enum?
-	
 	private String trader;
+	
+	private String style;
+	private String strategy;
+	@JsonDeserialize(using = LocalDateDeserializer.class)  
+	private LocalDate deliveryDate;
+	@JsonDeserialize(using = LocalDateDeserializer.class)  
+	private LocalDate expiryDate;
+	private String payCcy;
+	private BigDecimal premium;
+	private String premiumCcy;
+	private String premiumType;
+	@JsonDeserialize(using = LocalDateDeserializer.class)  
+	private LocalDate premiumDate;
+	@JsonDeserialize(using = LocalDateDeserializer.class)  
+	private LocalDate excerciseStartDate;
 	
 	public String getCustomer() {
 		return customer;
@@ -102,11 +108,73 @@ public class Trade { //RMR serializable?
 	public void setTrader(String trader) {
 		this.trader = trader;
 	}
-	
+	public String getStyle() {
+		return style;
+	}
+	public void setStyle(String style) {
+		this.style = style;
+	}
+	public String getStrategy() {
+		return strategy;
+	}
+	public void setStrategy(String strategy) {
+		this.strategy = strategy;
+	}
+	public LocalDate getDeliveryDate() {
+		return deliveryDate;
+	}
+	public void setDeliveryDate(LocalDate deliveryDate) {
+		this.deliveryDate = deliveryDate;
+	}
+	public LocalDate getExpiryDate() {
+		return expiryDate;
+	}
+	public void setExpiryDate(LocalDate expiryDate) {
+		this.expiryDate = expiryDate;
+	}
+	public String getPayCcy() {
+		return payCcy;
+	}
+	public void setPayCcy(String payCcy) {
+		this.payCcy = payCcy;
+	}
+	public BigDecimal getPremium() {
+		return premium;
+	}
+	public void setPremium(BigDecimal premium) {
+		this.premium = premium;
+	}
+	public String getPremiumCcy() {
+		return premiumCcy;
+	}
+	public void setPremiumCcy(String premiumCcy) {
+		this.premiumCcy = premiumCcy;
+	}
+	public String getPremiumType() {
+		return premiumType;
+	}
+	public void setPremiumType(String premiumType) {
+		this.premiumType = premiumType;
+	}
+	public LocalDate getPremiumDate() {
+		return premiumDate;
+	}
+	public void setPremiumDate(LocalDate premiumDate) {
+		this.premiumDate = premiumDate;
+	}
+	public LocalDate getExcerciseStartDate() {
+		return excerciseStartDate;
+	}
+	public void setExcerciseStartDate(LocalDate excerciseStartDate) {
+		this.excerciseStartDate = excerciseStartDate;
+	}
 	@Override
 	public String toString() {
-		return "Trade [customer=" + customer + ", ccyPair=" + ccyPair + ", type=" + type + ", direction=" + direction
-				+ ", tradeDate=" + tradeDate + ", amount1=" + amount1 + ", amount2=" + amount2 + ", rate=" + rate
-				+ ", valueDate=" + valueDate + ", legalEntity=" + legalEntity + ", trader=" + trader + "]";
+		return "Trade [type=" + type + ", tradeDate=" + tradeDate + ", valueDate=" + valueDate + ", customer="
+				+ customer + ", ccyPair=" + ccyPair + ", direction=" + direction + ", amount1=" + amount1 + ", amount2="
+				+ amount2 + ", rate=" + rate + ", legalEntity=" + legalEntity + ", trader=" + trader + ", style="
+				+ style + ", strategy=" + strategy + ", deliveryDate=" + deliveryDate + ", expiryDate=" + expiryDate
+				+ ", payCcy=" + payCcy + ", premium=" + premium + ", premiumCcy=" + premiumCcy + ", premiumType="
+				+ premiumType + ", premiumDate=" + premiumDate + ", excerciseStartDate=" + excerciseStartDate + "]";
 	}
 }
