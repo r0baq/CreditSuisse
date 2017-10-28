@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 import org.mroczkarobert.creditsuisse.service.CurrencyService;
 import org.mroczkarobert.creditsuisse.transport.RatesDay;
 import org.mroczkarobert.creditsuisse.util.InvalidCurrencyException;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
@@ -18,9 +19,9 @@ public class CurrencyServiceRemoteImpl implements CurrencyService {
 	private final static String URL = "http://api.fixer.io/{date}?base={currency}";
 	
 	private Logger log = LogManager.getLogger();
-	private RestTemplate rest = new RestTemplate(); //RMR
+	private RestTemplate rest = new RestTemplate();
 	
-	//RMR cache?
+	@Cacheable("currency")
 	public boolean isWorkingDay(LocalDate checkedDay, String currency) throws InvalidCurrencyException {
 		log.info("Calling external API: {}, {}, {}", URL, checkedDay, currency);
 		
@@ -31,7 +32,7 @@ public class CurrencyServiceRemoteImpl implements CurrencyService {
 			return checkedDay.equals(dayData.getDate());
 			
 		} catch (HttpClientErrorException exception) {
-			log.warn(exception);
+			log.warn(exception.getMessage(), exception);
 			
 			if (HttpStatus.UNPROCESSABLE_ENTITY.equals(exception.getStatusCode())) {
 				throw new InvalidCurrencyException();
