@@ -3,7 +3,9 @@ package org.mroczkarobert.creditsuisse.transport;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import org.mroczkarobert.creditsuisse.type.ProductType;
 import org.mroczkarobert.creditsuisse.util.LocalDateDeserializer;
+import org.mroczkarobert.creditsuisse.util.ProductTypeDeserializer;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
@@ -13,7 +15,8 @@ public class Trade { //RMR serializable?
 	
 	private String ccyPair; //RMR enums?
 	
-	private String type; //RMR enums?
+	@JsonDeserialize(using = ProductTypeDeserializer.class)  
+	private ProductType type;
 	
 	private String direction; //RMR enums?
 	
@@ -45,10 +48,10 @@ public class Trade { //RMR serializable?
 	public void setCcyPair(String ccyPair) {
 		this.ccyPair = ccyPair;
 	}
-	public String getType() {
+	public ProductType getType() {
 		return type;
 	}
-	public void setType(String type) {
+	public void setType(ProductType type) {
 		this.type = type;
 	}
 	public String getDirection() {

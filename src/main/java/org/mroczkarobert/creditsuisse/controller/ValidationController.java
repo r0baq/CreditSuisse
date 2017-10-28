@@ -2,9 +2,10 @@ package org.mroczkarobert.creditsuisse.controller;
 
 import java.util.Collection;
 
-import org.mroczkarobert.creditsuisse.service.ValidationService;
 import org.mroczkarobert.creditsuisse.transport.Trade;
 import org.mroczkarobert.creditsuisse.util.ValidationException;
+import org.mroczkarobert.creditsuisse.util.ValidatorFactory;
+import org.mroczkarobert.creditsuisse.validator.TradeValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,14 +17,17 @@ import org.springframework.web.bind.annotation.RestController;
 public class ValidationController {
 
 	@Autowired
-	private ValidationService validationService;
+	private ValidatorFactory factory;
 	
 	@RequestMapping
-	public void validate(@RequestBody Collection<Trade> tradeData) throws ValidationException {
-		System.out.println("RMR01 " + tradeData);
+	public void validate(@RequestBody Collection<Trade> trades) throws ValidationException {
+		System.out.println("RMR01 " + trades);
 		
-		for (Trade trade : tradeData) {
-			validationService.validate(trade);
+		TradeValidator validator;
+		
+		for (Trade trade : trades) {
+			validator = factory.getValidator(trade.getType());
+			validator.validate(trade);
 		}
 	}
 }

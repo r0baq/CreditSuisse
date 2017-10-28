@@ -1,19 +1,18 @@
-package org.mroczkarobert.creditsuisse.service;
+package org.mroczkarobert.creditsuisse.validator;
 
 import java.time.LocalDate;
 import java.util.Set;
 
+import org.mroczkarobert.creditsuisse.service.CurrencyRemoteService;
 import org.mroczkarobert.creditsuisse.transport.Trade;
 import org.mroczkarobert.creditsuisse.type.ErrorCode;
 import org.mroczkarobert.creditsuisse.util.InvalidCurrencyException;
 import org.mroczkarobert.creditsuisse.util.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Sets;
 
-@Service
-public class ValidationService {
+public abstract class BaseValidator implements TradeValidator {
 	
 	private static final Set<String> VALID_CUSTOMERS = Sets.newHashSet("PLUTO1", "PLUTO2");
 	
