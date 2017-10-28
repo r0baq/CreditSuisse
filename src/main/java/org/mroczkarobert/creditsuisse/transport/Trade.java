@@ -3,7 +3,7 @@ package org.mroczkarobert.creditsuisse.transport;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import org.mroczkarobert.creditsuisse.utils.LocalDateDeserializer;
+import org.mroczkarobert.creditsuisse.util.LocalDateDeserializer;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
