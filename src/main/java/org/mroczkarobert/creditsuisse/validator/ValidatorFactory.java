@@ -11,7 +11,7 @@ public class ValidatorFactory {
 	private SpotForwardValidator spotForwardValidator;
 	
 	@Autowired
-	private OptionsValidator optionsValidator;
+	private OptionValidator optionsValidator;
 	
 	public TradeValidator getValidator(ProductType productType) {
 		if (ProductType.SPOT.equals(productType) || ProductType.FORWARD.equals(productType)) {

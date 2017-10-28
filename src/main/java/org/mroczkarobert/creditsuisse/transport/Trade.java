@@ -3,21 +3,21 @@ package org.mroczkarobert.creditsuisse.transport;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import org.mroczkarobert.creditsuisse.type.ProductType;
 import org.mroczkarobert.creditsuisse.util.LocalDateDeserializer;
-import org.mroczkarobert.creditsuisse.util.ProductTypeDeserializer;
+import org.mroczkarobert.creditsuisse.util.LocalDateSerializer;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 public class Trade { //RMR serializable?
 	
-	@JsonDeserialize(using = ProductTypeDeserializer.class)  
-	private ProductType type;
-	@JsonDeserialize(using = LocalDateDeserializer.class)  
+	@JsonDeserialize(using = LocalDateDeserializer.class) 
+	@JsonSerialize(using = LocalDateSerializer.class) //RMR nie można tego globalnie?
 	private LocalDate tradeDate;
-	@JsonDeserialize(using = LocalDateDeserializer.class)  
+	@JsonDeserialize(using = LocalDateDeserializer.class) 
+	@JsonSerialize(using = LocalDateSerializer.class)
 	private LocalDate valueDate;
-	
+	private String type;
 	private String customer; //RMR enums?
 	private String ccyPair; //RMR enums?
 	private String direction; //RMR enums?
@@ -29,17 +29,21 @@ public class Trade { //RMR serializable?
 	
 	private String style;
 	private String strategy;
-	@JsonDeserialize(using = LocalDateDeserializer.class)  
+	@JsonDeserialize(using = LocalDateDeserializer.class) 
+	@JsonSerialize(using = LocalDateSerializer.class)
 	private LocalDate deliveryDate;
-	@JsonDeserialize(using = LocalDateDeserializer.class)  
+	@JsonDeserialize(using = LocalDateDeserializer.class) 
+	@JsonSerialize(using = LocalDateSerializer.class)
 	private LocalDate expiryDate;
 	private String payCcy;
 	private BigDecimal premium;
 	private String premiumCcy;
 	private String premiumType;
-	@JsonDeserialize(using = LocalDateDeserializer.class)  
+	@JsonDeserialize(using = LocalDateDeserializer.class) 
+	@JsonSerialize(using = LocalDateSerializer.class) 
 	private LocalDate premiumDate;
-	@JsonDeserialize(using = LocalDateDeserializer.class)  
+	@JsonDeserialize(using = LocalDateDeserializer.class) 
+	@JsonSerialize(using = LocalDateSerializer.class) 
 	private LocalDate excerciseStartDate;
 	
 	public String getCustomer() {
@@ -54,10 +58,10 @@ public class Trade { //RMR serializable?
 	public void setCcyPair(String ccyPair) {
 		this.ccyPair = ccyPair;
 	}
-	public ProductType getType() {
+	public String getType() {
 		return type;
 	}
-	public void setType(ProductType type) {
+	public void setType(String type) {
 		this.type = type;
 	}
 	public String getDirection() {

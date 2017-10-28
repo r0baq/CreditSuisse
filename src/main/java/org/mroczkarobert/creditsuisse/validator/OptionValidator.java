@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import com.google.common.collect.Sets;
 
 @Service
-public class OptionsValidator extends BaseValidator {
+public class OptionValidator extends BaseValidator {
 
 	private static final String AMERICAN = "AMERICAN";
 	private static final Set<String> VALID_STYLES = Sets.newHashSet("EUROPEAN", AMERICAN);

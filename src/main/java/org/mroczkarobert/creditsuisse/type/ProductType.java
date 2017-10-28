@@ -14,4 +14,14 @@ public enum ProductType {
 	public String getJsonValue() {
 		return jsonValue;
 	}
+
+	public static ProductType parse(String type) {
+		for (ProductType productType : ProductType.values()) {
+    		if (type.endsWith(productType.getJsonValue())) {
+    			return productType;
+    		}
+    	}
+    	
+		return null;
+	}
 }
