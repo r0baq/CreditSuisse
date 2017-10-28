@@ -3,6 +3,8 @@ package org.mroczkarobert.creditsuisse.controller;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.mroczkarobert.creditsuisse.service.ValidationService;
 import org.mroczkarobert.creditsuisse.transport.ErrorTrade;
 import org.mroczkarobert.creditsuisse.transport.Trade;
@@ -16,24 +18,27 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/validate", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 public class ValidationController {
 
+	private Logger log = LogManager.getLogger();
+	
 	@Autowired
 	private ValidationService validationService;
 	
 	@RequestMapping
 	public Collection<ErrorTrade> validate(@RequestBody Collection<Trade> trades) {
-		System.out.println("RMR01 " + trades);
+		log.info("Received request: {}", trades);
 		
 		Collection<ErrorTrade> errors = new ArrayList<>(0);
 		
 		for (Trade trade : trades) {
 			ErrorTrade result = validationService.validate(trade);
-			if (!result.getErrors().isEmpty()) {
+			if (result.hasErrors()) {
 				errors.add(result);
 			}
 		}
 		
 		//RMR inny HttpStatusCode?
 		
+		log.info("Sending response: {}", errors);
 		return errors;
 	}
 }

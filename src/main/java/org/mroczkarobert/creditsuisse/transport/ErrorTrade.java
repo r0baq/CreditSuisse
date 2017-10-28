@@ -22,9 +22,11 @@ public class ErrorTrade {
 	public Trade getTrade() {
 		return trade;
 	}
+	
 	public Collection<ErrorData> getErrors() {
 		return errors;
 	}
+	
 	public void add(ErrorCode errorCode, String message) {
 		errors.add(new ErrorData(errorCode, message));
 	}
@@ -37,5 +39,14 @@ public class ErrorTrade {
 
 	public void add(ErrorCode errorCode, String message, Object... args) {
 		errors.add(new ErrorData(errorCode, message, args));
+	}
+	
+	public boolean hasErrors() {
+		return !errors.isEmpty();
+	}
+
+	@Override
+	public String toString() {
+		return "ErrorTrade [trade=" + trade + ", errors=" + errors + "]";
 	}
 }

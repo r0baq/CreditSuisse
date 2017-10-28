@@ -1,5 +1,7 @@
 package org.mroczkarobert.creditsuisse.service.impl;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.mroczkarobert.creditsuisse.service.ValidationService;
 import org.mroczkarobert.creditsuisse.transport.ErrorTrade;
 import org.mroczkarobert.creditsuisse.transport.Trade;
@@ -13,18 +15,31 @@ import org.springframework.stereotype.Service;
 @Service
 public class ValidationServiceImpl implements ValidationService {
 
+	private Logger log = LogManager.getLogger();
+	
 	@Autowired
 	private ValidatorFactory factory;
 	
 	public ErrorTrade validate(Trade trade) {
+		log.info("Validating trade: {}", trade);
+		
 		ProductType productType = ProductType.parse(trade.getType());
 		TradeValidator validator = factory.getValidator(productType);
+		ErrorTrade result;
 		
 		if (validator == null) {
-			return new ErrorTrade(trade, ErrorCode.UNKNOWN_PRODUCT_TYPE, "Unknown product type");
+			result = new ErrorTrade(trade, ErrorCode.UNKNOWN_PRODUCT_TYPE, "Unknown product type");
 			
 		} else {
-			return validator.validate(trade, productType);
+			result = validator.validate(trade, productType);
 		}
+		
+		if (result.hasErrors()) {
+			log.warn("Trade has errors: {}", result);
+			
+		} else {
+			log.info("Trade validated without errors: {}", trade);
+		}
+		return result;
 	}
 }
