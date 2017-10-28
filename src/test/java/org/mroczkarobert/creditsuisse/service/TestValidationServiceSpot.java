@@ -23,7 +23,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class TestValidationService {
+public class TestValidationServiceSpot {
 
 	@Mock
 	private CurrencyRemoteService currencyRemoteService;
@@ -170,7 +170,7 @@ public class TestValidationService {
 	}
 	
 	@Test
-	public void shouldReportUnkonwLegalEntity() throws InvalidCurrencyException {
+	public void shouldReportUnkownLegalEntity() throws InvalidCurrencyException {
 		//given
 		Trade trade = new Trade();
 		trade.setCustomer("PLUTO1");
@@ -222,26 +222,18 @@ public class TestValidationService {
 	}
 	
 	@Test
-	public void shouldOptionEndWithoutErrors() throws InvalidCurrencyException {
+	public void shouldReportUnknownProductType() throws InvalidCurrencyException {
 		//given
 		Trade trade = new Trade();
 		trade.setCustomer("PLUTO1");
 		trade.setCcyPair("EURUSD");
-		trade.setType("VanillaOption");
-		trade.setStyle("EUROPEAN");
+		trade.setType("Other");
 		trade.setDirection("BUY");
-		trade.setStrategy("CALL");
 		trade.setTradeDate(LocalDate.parse("2016-08-11"));
 		trade.setAmount1(new BigDecimal("1000000.00"));
 		trade.setAmount2(new BigDecimal("1120000.00"));
 		trade.setRate(new BigDecimal("1.12"));
-		trade.setDeliveryDate(LocalDate.parse("2016-08-22"));
-		trade.setExpiryDate(LocalDate.parse("2016-08-19"));
-		trade.setPayCcy("USD");
-		trade.setPremium(new BigDecimal("0.20"));
-		trade.setPremiumCcy("USD");
-		trade.setPremiumType("%USD");
-		trade.setPremiumDate(LocalDate.parse("2016-08-12"));
+		trade.setValueDate(LocalDate.parse("2016-08-15"));
 		trade.setLegalEntity("CS Zurich");
 		trade.setTrader("Johann Baumfiddler");
 		
@@ -249,8 +241,6 @@ public class TestValidationService {
 		ErrorTrade result = validationService.validate(trade);
 		
 		//then
-		assertThat(result.getErrors()).isEmpty();
+		assertThat(result.getErrors().iterator().next().getErrorCode()).isEqualTo(ErrorCode.UNKNOWN_PRODUCT_TYPE);
 	}
-	
-	//RMR więcej niż jeden błąd
 }
