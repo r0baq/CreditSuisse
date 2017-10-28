@@ -19,10 +19,10 @@ public class SpotForwardValidator extends BaseValidator {
 		ProductType.FORWARD, LocalDate.parse("2010-02-03")
 	);
 	
-	public ErrorTrade validate(Trade trade) {
-		ErrorTrade result = super.validate(trade);
+	public ErrorTrade validate(Trade trade, ProductType productType) {
+		ErrorTrade result = super.validate(trade, productType);
 		
-		if (TYPES_DATES.get(trade.getType()).isAfter(trade.getValueDate())) {
+		if (TYPES_DATES.get(productType).isAfter(trade.getValueDate())) {
 			result.add(
 				ErrorCode.TYPE_NOT_AVAILABLE_FOR_DATE, 
 				"Type %s is not avalible for date %s", trade.getType(), trade.getValueDate()

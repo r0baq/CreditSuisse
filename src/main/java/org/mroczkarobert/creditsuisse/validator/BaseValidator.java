@@ -8,6 +8,7 @@ import org.mroczkarobert.creditsuisse.transport.ErrorData;
 import org.mroczkarobert.creditsuisse.transport.ErrorTrade;
 import org.mroczkarobert.creditsuisse.transport.Trade;
 import org.mroczkarobert.creditsuisse.type.ErrorCode;
+import org.mroczkarobert.creditsuisse.type.ProductType;
 import org.mroczkarobert.creditsuisse.util.InvalidCurrencyException;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -21,7 +22,7 @@ public abstract class BaseValidator implements TradeValidator {
 	@Autowired
 	private CurrencyRemoteService currencyRemoteService;
 
-	public ErrorTrade validate(Trade trade) {
+	public ErrorTrade validate(Trade trade, ProductType productType) {
 		ErrorTrade result = new ErrorTrade(trade);
 		
 		LocalDate valueDate = trade.getValueDate();

@@ -3,12 +3,9 @@ package org.mroczkarobert.creditsuisse.controller;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.mroczkarobert.creditsuisse.service.ValidationService;
 import org.mroczkarobert.creditsuisse.transport.ErrorTrade;
 import org.mroczkarobert.creditsuisse.transport.Trade;
-import org.mroczkarobert.creditsuisse.type.ErrorCode;
-import org.mroczkarobert.creditsuisse.type.ProductType;
-import org.mroczkarobert.creditsuisse.validator.TradeValidator;
-import org.mroczkarobert.creditsuisse.validator.ValidatorFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ValidationController {
 
 	@Autowired
-	private ValidatorFactory factory;
+	private ValidationService validationService;
 	
 	@RequestMapping
 	public Collection<ErrorTrade> validate(@RequestBody Collection<Trade> trades) {
@@ -29,19 +26,10 @@ public class ValidationController {
 		Collection<ErrorTrade> errors = new ArrayList<>(0);
 		
 		for (Trade trade : trades) {
-			ProductType productType = ProductType.parse(trade.getType());
-			TradeValidator validator = factory.getValidator(productType);
-			
-			if (validator == null) {
-				errors.add(new ErrorTrade(trade, ErrorCode.UNKNOWN_PRODUCT_TYPE, "Unknown product type"));
-				
-			} else {
-				ErrorTrade result = validator.validate(trade);
-				if (!result.getErrors().isEmpty()) {
-					errors.add(result);
-				}
+			ErrorTrade result = validationService.validate(trade);
+			if (!result.getErrors().isEmpty()) {
+				errors.add(result);
 			}
-			
 		}
 		
 		//RMR inny HttpStatusCode?
