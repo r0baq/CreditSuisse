@@ -16,6 +16,7 @@ import com.google.common.collect.Sets;
 public abstract class BaseValidator implements TradeValidator {
 	
 	private static final Set<String> VALID_CUSTOMERS = Sets.newHashSet("PLUTO1", "PLUTO2");
+	private static final Set<String> VALID_LEGAL_ENTITIES = Sets.newHashSet("CS Zurich");
 	
 	@Autowired
 	private CurrencyRemoteService currencyRemoteService;
@@ -42,7 +43,11 @@ public abstract class BaseValidator implements TradeValidator {
 		}
 		
 		if (!VALID_CUSTOMERS.contains(trade.getCustomer())) {
-			result.add(ErrorCode.CUSTOMER_NOT_SUPPORTED, "Customer %s is not supported", trade.getCustomer());
+			result.add(ErrorCode.UNKNOWN_CUSTOMER, "Customer %s is not supported", trade.getCustomer());
+		}
+		
+		if (!VALID_LEGAL_ENTITIES.contains(trade.getLegalEntity())) {
+			result.add(ErrorCode.UNKNOWN_LEGAL_ENTITY, "Legal entity %s is not supported", trade.getLegalEntity());
 		}
 		
 		return result;
