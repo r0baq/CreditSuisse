@@ -53,7 +53,7 @@ public class OptionValidator extends BaseValidator {
 				result.add(ErrorCode.EXCERCISE_START_DATE_AFTER_EXPIRY_DATE, "Excercise start date has to be before the expiry date");
 			}
 			
-			if (trade.getExpiryDate().isAfter(deliveryDate)) {
+			if (isAfter(trade.getExpiryDate(), deliveryDate)) {
 				result.add(ErrorCode.EXPIRY_DATE_AFTER_DELIVERY_DATE, "Expiry date has to be before the delivery date");
 			}
 			
