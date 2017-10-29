@@ -5,7 +5,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import org.mroczkarobert.creditsuisse.transport.ErrorTrade;
+import org.mroczkarobert.creditsuisse.transport.ValidationResult;
 import org.mroczkarobert.creditsuisse.util.ClientErrorHandler;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -34,10 +34,10 @@ public class ClientApplication {
 		HttpEntity<String> entity = new HttpEntity<String>(body, headers);
 		
 		System.out.printf("Calling server: %s, %s\n", URL, body);
-		ErrorTrade[] result = rest.postForObject(URL, entity, ErrorTrade[].class);
+		ValidationResult[] result = rest.postForObject(URL, entity, ValidationResult[].class);
 		System.out.printf("Response from external API: %s\n\n", (Object[]) result);
 
-		for (ErrorTrade error : result) {
+		for (ValidationResult error : result) {
 			System.out.printf("Trade: %s\n", error.getTrade());
 			System.out.printf("Errors: %s\n\n", error.getErrors());
 		}

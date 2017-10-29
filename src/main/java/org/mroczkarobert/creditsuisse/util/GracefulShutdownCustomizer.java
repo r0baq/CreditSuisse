@@ -32,10 +32,11 @@ public class GracefulShutdownCustomizer implements TomcatConnectorCustomizer, Ap
 				ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) executor;
 				threadPoolExecutor.shutdown();
 				if (!threadPoolExecutor.awaitTermination(30, TimeUnit.SECONDS)) {
-					log.warn("Tomcat thread pool did not shut down gracefully within 30 seconds. Proceeding with forceful shutdown");
+					log.warn("Tomcat thread pool did not shut down gracefully within 30 seconds. Proceeding with forceful shutdown.");
 				}
 				
-			} catch (InterruptedException ex) {
+			} catch (InterruptedException exception) {
+				log.warn(exception.getMessage(), exception);
 				Thread.currentThread().interrupt();
 			}
 		}

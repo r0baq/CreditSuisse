@@ -3,7 +3,7 @@ package org.mroczkarobert.creditsuisse.service.impl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mroczkarobert.creditsuisse.service.ValidationService;
-import org.mroczkarobert.creditsuisse.transport.ErrorTrade;
+import org.mroczkarobert.creditsuisse.transport.ValidationResult;
 import org.mroczkarobert.creditsuisse.transport.Trade;
 import org.mroczkarobert.creditsuisse.type.ErrorCode;
 import org.mroczkarobert.creditsuisse.type.ProductType;
@@ -20,15 +20,15 @@ public class ValidationServiceImpl implements ValidationService {
 	@Autowired
 	private ValidatorFactory factory;
 	
-	public ErrorTrade validate(Trade trade) {
+	public ValidationResult validate(Trade trade) {
 		log.info("Validating trade: {}", trade);
 		
 		ProductType productType = ProductType.parse(trade.getType());
 		TradeValidator validator = factory.getValidator(productType);
-		ErrorTrade result;
+		ValidationResult result;
 		
 		if (validator == null) {
-			result = new ErrorTrade(trade, ErrorCode.UNKNOWN_PRODUCT_TYPE, "Unknown product type");
+			result = new ValidationResult(trade, ErrorCode.UNKNOWN_PRODUCT_TYPE, "Unknown product type");
 			
 		} else {
 			result = validator.validate(trade, productType);

@@ -5,19 +5,19 @@ import java.util.Collection;
 
 import org.mroczkarobert.creditsuisse.type.ErrorCode;
 
-public class ErrorTrade {
+public class ValidationResult {
 
 	private Trade trade;
 	private Collection<ErrorData> errors = new ArrayList<>(0);
 	
-	public ErrorTrade() {
+	public ValidationResult() {
 	}
 	
-	public ErrorTrade(Trade trade) {
+	public ValidationResult(Trade trade) {
 		this.trade = trade;
 	}
 	
-	public ErrorTrade(Trade trade, ErrorCode errorCode, String message) {
+	public ValidationResult(Trade trade, ErrorCode errorCode, String message) {
 		this.trade = trade;
 		add(errorCode, message);
 	}

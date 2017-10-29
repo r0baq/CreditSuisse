@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.mroczkarobert.creditsuisse.transport.ErrorTrade;
+import org.mroczkarobert.creditsuisse.transport.ValidationResult;
 import org.mroczkarobert.creditsuisse.transport.Trade;
 import org.mroczkarobert.creditsuisse.type.ErrorCode;
 import org.mroczkarobert.creditsuisse.type.ProductType;
@@ -19,8 +19,8 @@ public class OptionValidator extends BaseValidator {
 	private static final String AMERICAN = "AMERICAN";
 	private static final Set<String> VALID_STYLES = Sets.newHashSet("EUROPEAN", AMERICAN);
 	
-	public ErrorTrade validate(Trade trade, ProductType productType) {
-		ErrorTrade result = super.validate(trade, productType);
+	public ValidationResult validate(Trade trade, ProductType productType) {
+		ValidationResult result = super.validate(trade, productType);
 		String style = trade.getStyle();
 		String payCurrency = trade.getPayCcy();
 		String premiumCurrency = trade.getPremiumCcy();

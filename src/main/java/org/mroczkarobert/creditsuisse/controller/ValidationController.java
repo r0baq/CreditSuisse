@@ -7,7 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mroczkarobert.creditsuisse.service.MetricsService;
 import org.mroczkarobert.creditsuisse.service.ValidationService;
-import org.mroczkarobert.creditsuisse.transport.ErrorTrade;
+import org.mroczkarobert.creditsuisse.transport.ValidationResult;
 import org.mroczkarobert.creditsuisse.transport.Trade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,14 +30,14 @@ public class ValidationController {
 	private MetricsService metricsService;
 	
 	@RequestMapping
-	public ResponseEntity<Collection<ErrorTrade>> validate(@RequestBody Collection<Trade> trades) {
+	public ResponseEntity<Collection<ValidationResult>> validate(@RequestBody Collection<Trade> trades) {
 		long startTime = metricsService.start();
 		log.info("Received request: {}", trades);
 		
-		Collection<ErrorTrade> errors = new ArrayList<>(0);
+		Collection<ValidationResult> errors = new ArrayList<>(0);
 		
 		for (Trade trade : trades) {
-			ErrorTrade result = validationService.validate(trade);
+			ValidationResult result = validationService.validate(trade);
 			if (result.hasErrors()) {
 				errors.add(result);
 			}

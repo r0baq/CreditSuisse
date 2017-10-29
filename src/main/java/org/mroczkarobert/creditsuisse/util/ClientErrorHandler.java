@@ -16,4 +16,4 @@ public class ClientErrorHandler implements ResponseErrorHandler {
 	  public boolean hasError(ClientHttpResponse response) throws IOException {
 		  return !HttpStatus.OK.equals(response.getStatusCode()) && !HttpStatus.BAD_REQUEST.equals(response.getStatusCode());
 	  }
-	}
+}

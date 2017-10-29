@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mroczkarobert.creditsuisse.transport.ErrorTrade;
+import org.mroczkarobert.creditsuisse.transport.ValidationResult;
 import org.mroczkarobert.creditsuisse.transport.Trade;
 import org.mroczkarobert.creditsuisse.type.ErrorCode;
 import org.mroczkarobert.creditsuisse.util.InvalidCurrencyException;
@@ -47,7 +47,7 @@ public class TestValidationServiceOption {
 		trade.setTrader("Johann Baumfiddler");
 		
 		//when
-		ErrorTrade result = validationService.validate(trade);
+		ValidationResult result = validationService.validate(trade);
 		
 		//then
 		assertThat(result.getErrors()).isEmpty();
@@ -78,7 +78,7 @@ public class TestValidationServiceOption {
 		trade.setTrader("Johann Baumfiddler");
 		
 		//when
-		ErrorTrade result = validationService.validate(trade);
+		ValidationResult result = validationService.validate(trade);
 		
 		//then
 		assertThat(result.getErrors().iterator().next().getErrorCode()).isEqualTo(ErrorCode.INVALID_STYLE);
@@ -110,7 +110,7 @@ public class TestValidationServiceOption {
 		trade.setTrader("Johann Baumfiddler");
 		
 		//when
-		ErrorTrade result = validationService.validate(trade);
+		ValidationResult result = validationService.validate(trade);
 		
 		//then
 		assertThat(result.getErrors()).isEmpty();
@@ -141,7 +141,7 @@ public class TestValidationServiceOption {
 		trade.setTrader("Johann Baumfiddler");
 		
 		//when
-		ErrorTrade result = validationService.validate(trade);
+		ValidationResult result = validationService.validate(trade);
 		
 		//then
 		assertThat(result.getErrors().iterator().next().getErrorCode()).isEqualTo(ErrorCode.EMPTY_EXCERCISE_START_DATE);
@@ -172,7 +172,7 @@ public class TestValidationServiceOption {
 		trade.setTrader("Johann Baumfiddler");
 		
 		//when
-		ErrorTrade result = validationService.validate(trade);
+		ValidationResult result = validationService.validate(trade);
 		
 		//then
 		assertThat(result.getErrors().iterator().next().getErrorCode()).isEqualTo(ErrorCode.EMPTY_EXPIRY_DATE);
@@ -203,7 +203,7 @@ public class TestValidationServiceOption {
 		trade.setTrader("Johann Baumfiddler");
 		
 		//when
-		ErrorTrade result = validationService.validate(trade);
+		ValidationResult result = validationService.validate(trade);
 		
 		//then
 		assertThat(result.getErrors().iterator().next().getErrorCode()).isEqualTo(ErrorCode.EMPTY_PREMIUM_DATE);
@@ -234,7 +234,7 @@ public class TestValidationServiceOption {
 		trade.setTrader("Johann Baumfiddler");
 		
 		//when
-		ErrorTrade result = validationService.validate(trade);
+		ValidationResult result = validationService.validate(trade);
 		
 		//then
 		assertThat(result.getErrors().iterator().next().getErrorCode()).isEqualTo(ErrorCode.EMPTY_DELIVERY_DATE);
@@ -266,7 +266,7 @@ public class TestValidationServiceOption {
 		trade.setTrader("Johann Baumfiddler");
 		
 		//when
-		ErrorTrade result = validationService.validate(trade);
+		ValidationResult result = validationService.validate(trade);
 		
 		//then
 		assertThat(result.getErrors().iterator().next().getErrorCode()).isEqualTo(ErrorCode.EXCERCISE_START_DATE_BEFORE_TRADE_DATE);
@@ -298,7 +298,7 @@ public class TestValidationServiceOption {
 		trade.setTrader("Johann Baumfiddler");
 		
 		//when
-		ErrorTrade result = validationService.validate(trade);
+		ValidationResult result = validationService.validate(trade);
 		
 		//then
 		assertThat(result.getErrors().iterator().next().getErrorCode()).isEqualTo(ErrorCode.EXCERCISE_START_DATE_AFTER_EXPIRY_DATE);
@@ -330,7 +330,7 @@ public class TestValidationServiceOption {
 		trade.setTrader("Johann Baumfiddler");
 		
 		//when
-		ErrorTrade result = validationService.validate(trade);
+		ValidationResult result = validationService.validate(trade);
 		
 		//then
 		assertThat(result.getErrors().iterator().next().getErrorCode()).isEqualTo(ErrorCode.EXPIRY_DATE_AFTER_DELIVERY_DATE);
@@ -362,7 +362,7 @@ public class TestValidationServiceOption {
 		trade.setTrader("Johann Baumfiddler");
 		
 		//when
-		ErrorTrade result = validationService.validate(trade);
+		ValidationResult result = validationService.validate(trade);
 		
 		//then
 		assertThat(result.getErrors().iterator().next().getErrorCode()).isEqualTo(ErrorCode.PREMIUM_DATE_AFTER_DELIVERY_DATE);
@@ -394,7 +394,7 @@ public class TestValidationServiceOption {
 		trade.setTrader("Johann Baumfiddler");
 		
 		//when
-		ErrorTrade result = validationService.validate(trade);
+		ValidationResult result = validationService.validate(trade);
 		
 		//then
 		assertThat(result.getErrors().size()).isEqualTo(2);
@@ -425,7 +425,7 @@ public class TestValidationServiceOption {
 		trade.setTrader("Johann Baumfiddler");
 		
 		//when
-		ErrorTrade result = validationService.validate(trade);
+		ValidationResult result = validationService.validate(trade);
 		
 		//then
 		assertThat(result.getErrors().iterator().next().getErrorCode()).isEqualTo(ErrorCode.INVALID_PAY_CURRENCY);
@@ -456,7 +456,7 @@ public class TestValidationServiceOption {
 		trade.setTrader("Johann Baumfiddler");
 		
 		//when
-		ErrorTrade result = validationService.validate(trade);
+		ValidationResult result = validationService.validate(trade);
 		
 		//then
 		assertThat(result.getErrors().iterator().next().getErrorCode()).isEqualTo(ErrorCode.INVALID_PREMIUM_CURRENCY);

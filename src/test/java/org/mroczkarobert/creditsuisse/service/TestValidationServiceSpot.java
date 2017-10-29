@@ -12,7 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mroczkarobert.creditsuisse.transport.ErrorTrade;
+import org.mroczkarobert.creditsuisse.transport.ValidationResult;
 import org.mroczkarobert.creditsuisse.transport.Trade;
 import org.mroczkarobert.creditsuisse.type.ErrorCode;
 import org.mroczkarobert.creditsuisse.util.InvalidCurrencyException;
@@ -60,7 +60,7 @@ public class TestValidationServiceSpot {
 		Mockito.when(workingDayService.isWorkingDay(LocalDate.parse("2016-08-15"), "USD")).thenReturn(true);
 		
 		//when
-		ErrorTrade result = validationService.validate(trade);
+		ValidationResult result = validationService.validate(trade);
 		
 		//then
 		assertThat(result.getErrors()).isEmpty();
@@ -86,7 +86,7 @@ public class TestValidationServiceSpot {
 		Mockito.when(workingDayService.isWorkingDay(LocalDate.parse("2016-08-15"), "USD")).thenReturn(true);
 		
 		//when
-		ErrorTrade result = validationService.validate(trade);
+		ValidationResult result = validationService.validate(trade);
 		
 		//then
 		assertThat(result.getErrors().iterator().next().getErrorCode()).isEqualTo(ErrorCode.CURRENCY_NOT_SUPPORTED_IN_EXTERNAL_SYSTEM_1);
@@ -112,7 +112,7 @@ public class TestValidationServiceSpot {
 		Mockito.when(workingDayService.isWorkingDay(LocalDate.parse("2016-08-15"), "USD")).thenReturn(true);
 		
 		//when
-		ErrorTrade result = validationService.validate(trade);
+		ValidationResult result = validationService.validate(trade);
 		
 		//then
 		assertThat(result.getErrors().iterator().next().getErrorCode()).isEqualTo(ErrorCode.INVALID_CURRENCY_PAIR);
@@ -138,7 +138,7 @@ public class TestValidationServiceSpot {
 		Mockito.when(workingDayService.isWorkingDay(LocalDate.parse("2016-08-15"), "USD")).thenReturn(true);
 		
 		//when
-		ErrorTrade result = validationService.validate(trade);
+		ValidationResult result = validationService.validate(trade);
 		
 		//then
 		assertThat(result.getErrors().iterator().next().getErrorCode()).isEqualTo(ErrorCode.INVALID_PAIR_CURRENCY_1);
@@ -164,7 +164,7 @@ public class TestValidationServiceSpot {
 		Mockito.when(workingDayService.isWorkingDay(LocalDate.parse("2016-08-15"), "BLE")).thenThrow(new InvalidCurrencyException());
 		
 		//when
-		ErrorTrade result = validationService.validate(trade);
+		ValidationResult result = validationService.validate(trade);
 		
 		//then
 		assertThat(result.getErrors().iterator().next().getErrorCode()).isEqualTo(ErrorCode.INVALID_PAIR_CURRENCY_2);
@@ -189,7 +189,7 @@ public class TestValidationServiceSpot {
 		Mockito.when(workingDayService.isWorkingDay(LocalDate.parse("2016-08-15"), "USD")).thenReturn(true);
 		
 		//when
-		ErrorTrade result = validationService.validate(trade);
+		ValidationResult result = validationService.validate(trade);
 		
 		//then
 		assertThat(result.getErrors().iterator().next().getErrorCode()).isEqualTo(ErrorCode.EMPTY_TRADE_DATE);
@@ -215,7 +215,7 @@ public class TestValidationServiceSpot {
 		Mockito.when(workingDayService.isWorkingDay(LocalDate.parse("2016-08-10"), "USD")).thenReturn(true);
 		
 		//when
-		ErrorTrade result = validationService.validate(trade);
+		ValidationResult result = validationService.validate(trade);
 		
 		//then
 		assertThat(result.getErrors().iterator().next().getErrorCode()).isEqualTo(ErrorCode.VALUE_DATE_BEFORE_TRADE_DATE);
@@ -241,7 +241,7 @@ public class TestValidationServiceSpot {
 		Mockito.when(workingDayService.isWorkingDay(LocalDate.parse("2016-08-15"), "USD")).thenReturn(true);
 		
 		//when
-		ErrorTrade result = validationService.validate(trade);
+		ValidationResult result = validationService.validate(trade);
 		
 		//then
 		assertThat(result.getErrors().iterator().next().getErrorCode()).isEqualTo(ErrorCode.UNKNOWN_CUSTOMER);
@@ -267,7 +267,7 @@ public class TestValidationServiceSpot {
 		Mockito.when(workingDayService.isWorkingDay(LocalDate.parse("2016-08-15"), "USD")).thenReturn(true);
 		
 		//when
-		ErrorTrade result = validationService.validate(trade);
+		ValidationResult result = validationService.validate(trade);
 		
 		//then
 		assertThat(result.getErrors().iterator().next().getErrorCode()).isEqualTo(ErrorCode.UNKNOWN_LEGAL_ENTITY);
@@ -293,7 +293,7 @@ public class TestValidationServiceSpot {
 		Mockito.when(workingDayService.isWorkingDay(LocalDate.parse("2010-12-31"), "USD")).thenReturn(true);
 		
 		//when
-		ErrorTrade result = validationService.validate(trade);
+		ValidationResult result = validationService.validate(trade);
 		
 		//then
 		assertThat(result.getErrors().iterator().next().getErrorCode()).isEqualTo(ErrorCode.TYPE_NOT_AVAILABLE_FOR_DATE);
@@ -316,7 +316,7 @@ public class TestValidationServiceSpot {
 		trade.setTrader("Johann Baumfiddler");
 		
 		//when
-		ErrorTrade result = validationService.validate(trade);
+		ValidationResult result = validationService.validate(trade);
 		
 		//then
 		assertThat(result.getErrors().iterator().next().getErrorCode()).isEqualTo(ErrorCode.UNKNOWN_PRODUCT_TYPE);

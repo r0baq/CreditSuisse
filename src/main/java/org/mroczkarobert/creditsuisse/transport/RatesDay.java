@@ -8,13 +8,11 @@ import org.mroczkarobert.creditsuisse.util.LocalDateDeserializer;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-public class RatesDay { //RMR serializable?
+public class RatesDay {
 	
 	private String base;
-	
 	@JsonDeserialize(using = LocalDateDeserializer.class)  
 	private LocalDate date;
-	
 	private Map<String, BigDecimal> rates;
 
 	public String getBase() {

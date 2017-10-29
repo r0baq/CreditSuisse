@@ -9,22 +9,22 @@ import org.mroczkarobert.creditsuisse.util.LocalDateSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-public class Trade { //RMR serializable?
+public class Trade {
 	
 	@JsonDeserialize(using = LocalDateDeserializer.class) 
-	@JsonSerialize(using = LocalDateSerializer.class) //RMR nie można tego globalnie?
+	@JsonSerialize(using = LocalDateSerializer.class)
 	private LocalDate tradeDate;
 	@JsonDeserialize(using = LocalDateDeserializer.class) 
 	@JsonSerialize(using = LocalDateSerializer.class)
 	private LocalDate valueDate;
 	private String type;
-	private String customer; //RMR enums?
-	private String ccyPair; //RMR enums?
-	private String direction; //RMR enums?
+	private String customer;
+	private String ccyPair;
+	private String direction;
 	private BigDecimal amount1;
 	private BigDecimal amount2;
 	private BigDecimal rate;
-	private String legalEntity; //RMR enum?
+	private String legalEntity;
 	private String trader;
 	
 	private String style;
