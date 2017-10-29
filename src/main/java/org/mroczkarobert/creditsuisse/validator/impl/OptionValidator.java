@@ -3,6 +3,7 @@ package org.mroczkarobert.creditsuisse.validator.impl;
 import java.time.LocalDate;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.mroczkarobert.creditsuisse.transport.ErrorTrade;
 import org.mroczkarobert.creditsuisse.transport.Trade;
 import org.mroczkarobert.creditsuisse.type.ErrorCode;
@@ -21,20 +22,31 @@ public class OptionValidator extends BaseValidator {
 	public ErrorTrade validate(Trade trade, ProductType productType) {
 		ErrorTrade result = super.validate(trade, productType);
 		String style = trade.getStyle();
+		String payCurrency = trade.getPayCcy();
+		String premiumCurrency = trade.getPremiumCcy();
 		
-		if (!VALID_STYLES.contains(style)) { //RMR ignoreCase?
+		if (!VALID_STYLES.contains(style)) {
 			result.add(ErrorCode.INVALID_STYLE, "Invalid style %s", style);
 		}
 		
-		if (AMERICAN.equals(style)) { //RMR ignoreCase - jw
+		if (StringUtils.isNotBlank(payCurrency) && !currencyService.isValidCurrency(payCurrency)) {
+			result.add(ErrorCode.INVALID_PAY_CURRENCY, "Currency %s is not a valid ISO 4217 currency", payCurrency);
+		}
+		
+		if (StringUtils.isNotBlank(premiumCurrency) && !currencyService.isValidCurrency(premiumCurrency)) {
+			result.add(ErrorCode.INVALID_PREMIUM_CURRENCY, "Currency %s is not a valid ISO 4217 currency", premiumCurrency);
+		}
+		
+		if (AMERICAN.equals(style)) {
 			LocalDate excerciseStartDate = trade.getExcerciseStartDate();
 			LocalDate deliveryDate = trade.getDeliveryDate();
+			LocalDate expiryDate = trade.getExpiryDate();
 			
 			if (excerciseStartDate == null) {
 				result.add(ErrorCode.EMPTY_EXCERCISE_START_DATE, "%s style cannot have empty excercise start date", AMERICAN);
 			}
 			
-			if (trade.getExpiryDate() == null) {
+			if (expiryDate == null) {
 				result.add(ErrorCode.EMPTY_EXPIRY_DATE, "%s style cannot have empty expire date", AMERICAN);
 			}
 			
@@ -50,11 +62,11 @@ public class OptionValidator extends BaseValidator {
 				result.add(ErrorCode.EXCERCISE_START_DATE_BEFORE_TRADE_DATE, "Excercise start date has to be after the trade date");
 			}
 			
-			if (isAfter(excerciseStartDate, trade.getExpiryDate())) {
+			if (isAfter(excerciseStartDate, expiryDate)) {
 				result.add(ErrorCode.EXCERCISE_START_DATE_AFTER_EXPIRY_DATE, "Excercise start date has to be before the expiry date");
 			}
 			
-			if (isAfter(trade.getExpiryDate(), deliveryDate)) {
+			if (isAfter(expiryDate, deliveryDate)) {
 				result.add(ErrorCode.EXPIRY_DATE_AFTER_DELIVERY_DATE, "Expiry date has to be before the delivery date");
 			}
 			

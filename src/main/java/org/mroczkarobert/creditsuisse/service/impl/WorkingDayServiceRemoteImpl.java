@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.mroczkarobert.creditsuisse.service.CurrencyService;
+import org.mroczkarobert.creditsuisse.service.WorkingDayService;
 import org.mroczkarobert.creditsuisse.transport.RatesDay;
 import org.mroczkarobert.creditsuisse.util.InvalidCurrencyException;
 import org.springframework.cache.annotation.Cacheable;
@@ -14,14 +14,14 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-public class CurrencyServiceRemoteImpl implements CurrencyService {
+public class WorkingDayServiceRemoteImpl implements WorkingDayService {
 
 	private final static String URL = "http://api.fixer.io/{date}?base={currency}";
 	
 	private Logger log = LogManager.getLogger();
 	private RestTemplate rest = new RestTemplate();
 	
-	@Cacheable("currency")
+	@Cacheable("workingDay")
 	public boolean isWorkingDay(LocalDate checkedDay, String currency) throws InvalidCurrencyException {
 		log.info("Calling external API: {}, {}, {}", URL, checkedDay, currency);
 		

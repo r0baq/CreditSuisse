@@ -26,7 +26,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class TestValidationServiceSpot {
 
 	@Mock
-	private CurrencyService currencyService;
+	private WorkingDayService workingDayService;
 	
 	@InjectMocks
 	@Autowired
@@ -56,8 +56,8 @@ public class TestValidationServiceSpot {
 		trade.setLegalEntity("CS Zurich");
 		trade.setTrader("Johann Baumfiddler");
 		
-		Mockito.when(currencyService.isWorkingDay(LocalDate.parse("2016-08-15"), "EUR")).thenReturn(true);
-		Mockito.when(currencyService.isWorkingDay(LocalDate.parse("2016-08-15"), "USD")).thenReturn(true);
+		Mockito.when(workingDayService.isWorkingDay(LocalDate.parse("2016-08-15"), "EUR")).thenReturn(true);
+		Mockito.when(workingDayService.isWorkingDay(LocalDate.parse("2016-08-15"), "USD")).thenReturn(true);
 		
 		//when
 		ErrorTrade result = validationService.validate(trade);
@@ -67,7 +67,7 @@ public class TestValidationServiceSpot {
 	}
 	
 	@Test
-	public void shouldReportInvalidCurrency() throws InvalidCurrencyException {
+	public void shouldReportCurrencyNotSupportedInExternalSystem() throws InvalidCurrencyException {
 		//given
 		Trade trade = new Trade();
 		trade.setCustomer("PLUTO1");
@@ -82,14 +82,92 @@ public class TestValidationServiceSpot {
 		trade.setLegalEntity("CS Zurich");
 		trade.setTrader("Johann Baumfiddler");
 		
-		Mockito.when(currencyService.isWorkingDay(LocalDate.parse("2016-08-15"), "XXX")).thenThrow(new InvalidCurrencyException());
-		Mockito.when(currencyService.isWorkingDay(LocalDate.parse("2016-08-15"), "USD")).thenReturn(true);
+		Mockito.when(workingDayService.isWorkingDay(LocalDate.parse("2016-08-15"), "XXX")).thenThrow(new InvalidCurrencyException());
+		Mockito.when(workingDayService.isWorkingDay(LocalDate.parse("2016-08-15"), "USD")).thenReturn(true);
 		
 		//when
 		ErrorTrade result = validationService.validate(trade);
 		
 		//then
-		assertThat(result.getErrors().iterator().next().getErrorCode()).isEqualTo(ErrorCode.INVALID_CURRENCY_1);
+		assertThat(result.getErrors().iterator().next().getErrorCode()).isEqualTo(ErrorCode.CURRENCY_NOT_SUPPORTED_IN_EXTERNAL_SYSTEM_1);
+	}
+	
+	@Test
+	public void shouldReportInvalidCurrencyPair() throws InvalidCurrencyException {
+		//given
+		Trade trade = new Trade();
+		trade.setCustomer("PLUTO1");
+		trade.setCcyPair("EUR&USD");
+		trade.setType("Spot");
+		trade.setDirection("BUY");
+		trade.setTradeDate(LocalDate.parse("2016-08-11"));
+		trade.setAmount1(new BigDecimal("1000000.00"));
+		trade.setAmount2(new BigDecimal("1120000.00"));
+		trade.setRate(new BigDecimal("1.12"));
+		trade.setValueDate(LocalDate.parse("2016-08-15"));
+		trade.setLegalEntity("CS Zurich");
+		trade.setTrader("Johann Baumfiddler");
+		
+		Mockito.when(workingDayService.isWorkingDay(LocalDate.parse("2016-08-15"), "EUR")).thenReturn(true);
+		Mockito.when(workingDayService.isWorkingDay(LocalDate.parse("2016-08-15"), "USD")).thenReturn(true);
+		
+		//when
+		ErrorTrade result = validationService.validate(trade);
+		
+		//then
+		assertThat(result.getErrors().iterator().next().getErrorCode()).isEqualTo(ErrorCode.INVALID_CURRENCY_PAIR);
+	}
+	
+	@Test
+	public void shouldReportInvalidPairCurrency1() throws InvalidCurrencyException {
+		//given
+		Trade trade = new Trade();
+		trade.setCustomer("PLUTO1");
+		trade.setCcyPair("BLEUSD");
+		trade.setType("Spot");
+		trade.setDirection("BUY");
+		trade.setTradeDate(LocalDate.parse("2016-08-11"));
+		trade.setAmount1(new BigDecimal("1000000.00"));
+		trade.setAmount2(new BigDecimal("1120000.00"));
+		trade.setRate(new BigDecimal("1.12"));
+		trade.setValueDate(LocalDate.parse("2016-08-15"));
+		trade.setLegalEntity("CS Zurich");
+		trade.setTrader("Johann Baumfiddler");
+		
+		Mockito.when(workingDayService.isWorkingDay(LocalDate.parse("2016-08-15"), "BLE")).thenThrow(new InvalidCurrencyException());
+		Mockito.when(workingDayService.isWorkingDay(LocalDate.parse("2016-08-15"), "USD")).thenReturn(true);
+		
+		//when
+		ErrorTrade result = validationService.validate(trade);
+		
+		//then
+		assertThat(result.getErrors().iterator().next().getErrorCode()).isEqualTo(ErrorCode.INVALID_PAIR_CURRENCY_1);
+	}
+	
+	@Test
+	public void shouldReportInvalidPairCurrency2() throws InvalidCurrencyException {
+		//given
+		Trade trade = new Trade();
+		trade.setCustomer("PLUTO1");
+		trade.setCcyPair("EURBLE");
+		trade.setType("Spot");
+		trade.setDirection("BUY");
+		trade.setTradeDate(LocalDate.parse("2016-08-11"));
+		trade.setAmount1(new BigDecimal("1000000.00"));
+		trade.setAmount2(new BigDecimal("1120000.00"));
+		trade.setRate(new BigDecimal("1.12"));
+		trade.setValueDate(LocalDate.parse("2016-08-15"));
+		trade.setLegalEntity("CS Zurich");
+		trade.setTrader("Johann Baumfiddler");
+		
+		Mockito.when(workingDayService.isWorkingDay(LocalDate.parse("2016-08-15"), "EUR")).thenReturn(true);
+		Mockito.when(workingDayService.isWorkingDay(LocalDate.parse("2016-08-15"), "BLE")).thenThrow(new InvalidCurrencyException());
+		
+		//when
+		ErrorTrade result = validationService.validate(trade);
+		
+		//then
+		assertThat(result.getErrors().iterator().next().getErrorCode()).isEqualTo(ErrorCode.INVALID_PAIR_CURRENCY_2);
 	}
 	
 	@Test
@@ -107,8 +185,8 @@ public class TestValidationServiceSpot {
 		trade.setLegalEntity("CS Zurich");
 		trade.setTrader("Johann Baumfiddler");
 		
-		Mockito.when(currencyService.isWorkingDay(LocalDate.parse("2016-08-15"), "EUR")).thenReturn(true);
-		Mockito.when(currencyService.isWorkingDay(LocalDate.parse("2016-08-15"), "USD")).thenReturn(true);
+		Mockito.when(workingDayService.isWorkingDay(LocalDate.parse("2016-08-15"), "EUR")).thenReturn(true);
+		Mockito.when(workingDayService.isWorkingDay(LocalDate.parse("2016-08-15"), "USD")).thenReturn(true);
 		
 		//when
 		ErrorTrade result = validationService.validate(trade);
@@ -133,8 +211,8 @@ public class TestValidationServiceSpot {
 		trade.setLegalEntity("CS Zurich");
 		trade.setTrader("Johann Baumfiddler");
 		
-		Mockito.when(currencyService.isWorkingDay(LocalDate.parse("2016-08-10"), "EUR")).thenReturn(true);
-		Mockito.when(currencyService.isWorkingDay(LocalDate.parse("2016-08-10"), "USD")).thenReturn(true);
+		Mockito.when(workingDayService.isWorkingDay(LocalDate.parse("2016-08-10"), "EUR")).thenReturn(true);
+		Mockito.when(workingDayService.isWorkingDay(LocalDate.parse("2016-08-10"), "USD")).thenReturn(true);
 		
 		//when
 		ErrorTrade result = validationService.validate(trade);
@@ -159,8 +237,8 @@ public class TestValidationServiceSpot {
 		trade.setLegalEntity("CS Zurich");
 		trade.setTrader("Johann Baumfiddler");
 		
-		Mockito.when(currencyService.isWorkingDay(LocalDate.parse("2016-08-15"), "EUR")).thenReturn(true);
-		Mockito.when(currencyService.isWorkingDay(LocalDate.parse("2016-08-15"), "USD")).thenReturn(true);
+		Mockito.when(workingDayService.isWorkingDay(LocalDate.parse("2016-08-15"), "EUR")).thenReturn(true);
+		Mockito.when(workingDayService.isWorkingDay(LocalDate.parse("2016-08-15"), "USD")).thenReturn(true);
 		
 		//when
 		ErrorTrade result = validationService.validate(trade);
@@ -185,8 +263,8 @@ public class TestValidationServiceSpot {
 		trade.setLegalEntity("CS Zurich XXX");
 		trade.setTrader("Johann Baumfiddler");
 		
-		Mockito.when(currencyService.isWorkingDay(LocalDate.parse("2016-08-15"), "EUR")).thenReturn(true);
-		Mockito.when(currencyService.isWorkingDay(LocalDate.parse("2016-08-15"), "USD")).thenReturn(true);
+		Mockito.when(workingDayService.isWorkingDay(LocalDate.parse("2016-08-15"), "EUR")).thenReturn(true);
+		Mockito.when(workingDayService.isWorkingDay(LocalDate.parse("2016-08-15"), "USD")).thenReturn(true);
 		
 		//when
 		ErrorTrade result = validationService.validate(trade);
@@ -211,8 +289,8 @@ public class TestValidationServiceSpot {
 		trade.setLegalEntity("CS Zurich");
 		trade.setTrader("Johann Baumfiddler");
 		
-		Mockito.when(currencyService.isWorkingDay(LocalDate.parse("2010-12-31"), "EUR")).thenReturn(true);
-		Mockito.when(currencyService.isWorkingDay(LocalDate.parse("2010-12-31"), "USD")).thenReturn(true);
+		Mockito.when(workingDayService.isWorkingDay(LocalDate.parse("2010-12-31"), "EUR")).thenReturn(true);
+		Mockito.when(workingDayService.isWorkingDay(LocalDate.parse("2010-12-31"), "USD")).thenReturn(true);
 		
 		//when
 		ErrorTrade result = validationService.validate(trade);

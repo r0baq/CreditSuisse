@@ -399,4 +399,66 @@ public class TestValidationServiceOption {
 		//then
 		assertThat(result.getErrors().size()).isEqualTo(2);
 	}
+	
+	@Test
+	public void shouldReportInvalidPayCurrency() throws InvalidCurrencyException {
+		//given
+		Trade trade = new Trade();
+		trade.setCustomer("PLUTO1");
+		trade.setCcyPair("EURUSD");
+		trade.setType("VanillaOption");
+		trade.setStyle("EUROPEAN");
+		trade.setDirection("BUY");
+		trade.setStrategy("CALL");
+		trade.setTradeDate(LocalDate.parse("2016-08-11"));
+		trade.setAmount1(new BigDecimal("1000000.00"));
+		trade.setAmount2(new BigDecimal("1120000.00"));
+		trade.setRate(new BigDecimal("1.12"));
+		trade.setDeliveryDate(LocalDate.parse("2016-08-22"));
+		trade.setExpiryDate(LocalDate.parse("2016-08-19"));
+		trade.setPayCcy("BLE");
+		trade.setPremium(new BigDecimal("0.20"));
+		trade.setPremiumCcy("USD");
+		trade.setPremiumType("%USD");
+		trade.setPremiumDate(LocalDate.parse("2016-08-12"));
+		trade.setLegalEntity("CS Zurich");
+		trade.setTrader("Johann Baumfiddler");
+		
+		//when
+		ErrorTrade result = validationService.validate(trade);
+		
+		//then
+		assertThat(result.getErrors().iterator().next().getErrorCode()).isEqualTo(ErrorCode.INVALID_PAY_CURRENCY);
+	}
+	
+	@Test
+	public void shouldReportInvalidPremiumCurrency() throws InvalidCurrencyException {
+		//given
+		Trade trade = new Trade();
+		trade.setCustomer("PLUTO1");
+		trade.setCcyPair("EURUSD");
+		trade.setType("VanillaOption");
+		trade.setStyle("EUROPEAN");
+		trade.setDirection("BUY");
+		trade.setStrategy("CALL");
+		trade.setTradeDate(LocalDate.parse("2016-08-11"));
+		trade.setAmount1(new BigDecimal("1000000.00"));
+		trade.setAmount2(new BigDecimal("1120000.00"));
+		trade.setRate(new BigDecimal("1.12"));
+		trade.setDeliveryDate(LocalDate.parse("2016-08-22"));
+		trade.setExpiryDate(LocalDate.parse("2016-08-19"));
+		trade.setPayCcy("USD");
+		trade.setPremium(new BigDecimal("0.20"));
+		trade.setPremiumCcy("BLE");
+		trade.setPremiumType("%USD");
+		trade.setPremiumDate(LocalDate.parse("2016-08-12"));
+		trade.setLegalEntity("CS Zurich");
+		trade.setTrader("Johann Baumfiddler");
+		
+		//when
+		ErrorTrade result = validationService.validate(trade);
+		
+		//then
+		assertThat(result.getErrors().iterator().next().getErrorCode()).isEqualTo(ErrorCode.INVALID_PREMIUM_CURRENCY);
+	}
 }
