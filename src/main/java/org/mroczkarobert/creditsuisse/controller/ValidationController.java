@@ -9,7 +9,9 @@ import org.mroczkarobert.creditsuisse.service.ValidationService;
 import org.mroczkarobert.creditsuisse.transport.ErrorTrade;
 import org.mroczkarobert.creditsuisse.transport.Trade;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,7 +26,7 @@ public class ValidationController {
 	private ValidationService validationService;
 	
 	@RequestMapping
-	public Collection<ErrorTrade> validate(@RequestBody Collection<Trade> trades) {
+	public ResponseEntity<Collection<ErrorTrade>> validate(@RequestBody Collection<Trade> trades) {
 		log.info("Received request: {}", trades);
 		
 		Collection<ErrorTrade> errors = new ArrayList<>(0);
@@ -36,9 +38,9 @@ public class ValidationController {
 			}
 		}
 		
-		//RMR inny HttpStatusCode?
+		HttpStatus responseStatus = (errors.isEmpty() ? HttpStatus.OK : HttpStatus.BAD_REQUEST);
 		
 		log.info("Sending response: {}", errors);
-		return errors;
+		return new ResponseEntity<>(errors, responseStatus);
 	}
 }
