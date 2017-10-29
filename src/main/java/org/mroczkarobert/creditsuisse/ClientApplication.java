@@ -1,6 +1,12 @@
 package org.mroczkarobert.creditsuisse;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 import org.mroczkarobert.creditsuisse.transport.ErrorTrade;
+import org.mroczkarobert.creditsuisse.util.ClientErrorHandler;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -10,15 +16,19 @@ public class ClientApplication {
 
 	private static final String URL = "http://localhost:8080/validate";
 	
-	private static RestTemplate rest = new RestTemplate();
-	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
+		RestTemplate rest = new RestTemplate();
+		rest.setErrorHandler(new ClientErrorHandler());
+		
+		String body;
+		
 		if (args.length == 0) {
-			System.err.println("Request body must be provided as execution parametr");
-			return;
+			body = new String(Files.readAllBytes(Paths.get("SampleTestData.txt")), Charset.forName("UTF-8"));
+			
+		} else {
+			body = String.join(" ", args);
 		}
 		
-		String body = String.join(" ", args);
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		HttpEntity<String> entity = new HttpEntity<String>(body, headers);
@@ -26,7 +36,7 @@ public class ClientApplication {
 		System.out.printf("Calling server: %s, %s\n", URL, body);
 		ErrorTrade[] result = rest.postForObject(URL, entity, ErrorTrade[].class);
 		System.out.printf("Response from external API: %s\n\n", (Object[]) result);
-		
+
 		for (ErrorTrade error : result) {
 			System.out.printf("Trade: %s\n", error.getTrade());
 			System.out.printf("Errors: %s\n\n", error.getErrors());
