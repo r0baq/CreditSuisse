@@ -17,7 +17,7 @@ public enum ProductType {
 
 	public static ProductType parse(String type) {
 		for (ProductType productType : ProductType.values()) {
-    		if (type.endsWith(productType.getJsonValue())) {
+    		if (type != null && type.endsWith(productType.getJsonValue())) {
     			return productType;
     		}
     	}
