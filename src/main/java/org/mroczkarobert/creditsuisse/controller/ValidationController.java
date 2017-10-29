@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.mroczkarobert.creditsuisse.service.MetricsService;
 import org.mroczkarobert.creditsuisse.service.ValidationService;
 import org.mroczkarobert.creditsuisse.transport.ErrorTrade;
 import org.mroczkarobert.creditsuisse.transport.Trade;
@@ -25,8 +26,12 @@ public class ValidationController {
 	@Autowired
 	private ValidationService validationService;
 	
+	@Autowired
+	private MetricsService metricsService;
+	
 	@RequestMapping
 	public ResponseEntity<Collection<ErrorTrade>> validate(@RequestBody Collection<Trade> trades) {
+		long startTime = metricsService.start();
 		log.info("Received request: {}", trades);
 		
 		Collection<ErrorTrade> errors = new ArrayList<>(0);
@@ -41,6 +46,7 @@ public class ValidationController {
 		HttpStatus responseStatus = (errors.isEmpty() ? HttpStatus.OK : HttpStatus.BAD_REQUEST);
 		
 		log.info("Sending response: {}", errors);
+		metricsService.end(startTime);
 		return new ResponseEntity<>(errors, responseStatus);
 	}
 }
