@@ -8,9 +8,9 @@ import org.springframework.context.annotation.Configuration;
 @SpringBootApplication
 @Configuration
 @EnableCaching
-public class Application {
+public class ServerApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(Application.class, args);
+		SpringApplication.run(ServerApplication.class, args);
 	}
 }

@@ -10,6 +10,9 @@ public class ErrorTrade {
 	private Trade trade;
 	private Collection<ErrorData> errors = new ArrayList<>(0);
 	
+	public ErrorTrade() {
+	}
+	
 	public ErrorTrade(Trade trade) {
 		this.trade = trade;
 	}
